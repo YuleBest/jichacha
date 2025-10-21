@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV Parsing Test</title>
+    <script src="https://unpkg.com/papaparse@5.5.3/papaparse.min.js"></script>
+</head>
+<body>
+    <h1>CSV Parsing Test</h1>
+    <div id="results"></div>
+    
+    <script>
+        async function testCsvParsing() {
+            const resultsDiv = document.getElementById('results');
+            
+            try {
+                // Test different paths
+                const paths = [
+                    '/database/models.csv',
+                    '/src/database/models.csv'
+                ];
+                
+                let response;
+                let successfulPath;
+                
+                for (const path of paths) {
+                    try {
+                        response = await fetch(path);
+                        if (response.ok) {
+                            successfulPath = path;
+                            break;
+                        }
+                    } catch (error) {
+                        console.warn(`Failed to load from ${path}:`, error);
+                    }
+                }
+                
+                if (!response || !response.ok) {
+                    throw new Error('Could not load CSV file from any path');
+                }
+                
+                const csvText = await response.text();
+                
+                // Test parsing with different configurations
+                const configs = [
+                    {
+                        name: 'Standard config',
+                        config: {
+                            header: true,
+                            skipEmptyLines: true,
+                            delimiter: ",",
+                            quoteChar: '"',
+                            escapeChar: '"',
+                            transformHeader: (header) => header.trim(),
+                            transform: (value) => value.trim(),
+                        }
+                    },
+                    {
+                        name: 'Relaxed config',
+                        config: {
+                            header: true,
+                            skipEmptyLines: true,
+                            delimiter: ",",
+                            quoteChar: '"',
+                            escapeChar: '"',
+                            transformHeader: (header) => header.trim(),
+                            transform: (value) => value.trim(),
+                            dynamicTyping: false,
+                        }
+                    }
+                ];
+                
+                let bestResult = null;
+                let bestConfig = null;
+                
+                for (const {name, config} of configs) {
+                    const result = Papa.parse(csvText, config);
+                    
+                    resultsDiv.innerHTML += `<h3>${name}:</h3>`;
+                    resultsDiv.innerHTML += `<p>Total rows: ${result.data.length}</p>`;
+                    resultsDiv.innerHTML += `<p>Errors: ${result.errors.length}</p>`;
+                    
+                    if (result.errors.length > 0) {
+                        resultsDiv.innerHTML += `<p>Error details:</p><ul>`;
+                        result.errors.slice(0, 5).forEach(error => {
+                            resultsDiv.innerHTML += `<li>Type: ${error.type}, Code: ${error.code}, Message: ${error.message}, Row: ${error.row}</li>`;
+                        });
+                        resultsDiv.innerHTML += `</ul>`;
+                    }
+                    
+                    if (result.data.length > 0) {
+                        resultsDiv.innerHTML += `<p>First row sample: ${JSON.stringify(result.data[0])}</p>`;
+                        
+                        // Check if this is better than previous results
+                        if (!bestResult || result.errors.length < bestResult.errors.length) {
+                            bestResult = result;
+                            bestConfig = name;
+                        }
+                    }
+                    
+                    resultsDiv.innerHTML += '<hr>';
+                }
+                
+                if (bestResult) {
+                    resultsDiv.innerHTML += `<h2>Best result: ${bestConfig}</h2>`;
+                    resultsDiv.innerHTML += `<p>Total valid rows: ${bestResult.data.length}</p>`;
+                }
+                
+            } catch (error) {
+                resultsDiv.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+                console.error('Test failed:', error);
+            }
+        }
+        
+        // Run test when page loads
+        testCsvParsing();
+    </script>
+</body>
+</html>

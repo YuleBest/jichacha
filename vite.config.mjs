@@ -46,6 +46,25 @@ export default defineConfig({
     host: "0.0.0.0",
     port: 7779,
   },
+  // 确保静态资源正确处理
+  publicDir: 'public',
+  // 确保构建时包含数据库文件
+  build: {
+    rollupOptions: {
+      external: [],
+      output: {
+        assetFileNames: (assetInfo) => {
+          // 确保CSV文件被正确处理
+          if (assetInfo.name.endsWith('.csv')) {
+            return 'assets/database/[name].[ext]';
+          }
+          return 'assets/[name].[hash].[ext]';
+        },
+      },
+    },
+    // 包含src/database目录
+    assetsInclude: ['**/*.csv'],
+  },
   css: {
     preprocessorOptions: {
       sass: {
