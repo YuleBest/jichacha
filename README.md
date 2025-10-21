@@ -21,7 +21,8 @@
 
 ## 开源协议
 
-MIT License
+- 数据库部分及相关代码：CC BY-NC-SA 4.0
+- 其他部分：MIT License
 
 ## 贡献
 
