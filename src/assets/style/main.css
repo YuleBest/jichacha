@@ -1,0 +1,120 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  background-color: #ffffff;
+}
+
+@font-face {
+  font-family: "Mona Sans";
+  src: url("/fonts/Mona-Sans.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@font-face {
+  font-family: "Mona Sans EX";
+  src: url("/fonts/Mona-Sans-Expanded.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@font-face {
+  font-family: "Fira Code";
+  src: url("/fonts/FiraCode.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#app,
+body,
+html,
+* {
+  font-family: "Mona Sans", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif !important;
+  font-weight: 400 !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+strong,
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-weight: 500 !important;
+}
+
+.v-card .v-card-title {
+  font-weight: 600 !important;
+}
+
+code,
+.v-chip__content {
+  font-family: "Fira Code", monospace, "Mona Sans", Arial !important;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+/* 改变文字被选中时的背景色和文字颜色 */
+::selection {
+  background-color: #ff6b9d;
+  color: white;
+}
+
+::-moz-selection {
+  background-color: #ff6b9d;
+  color: white;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* 现代化按钮焦点样式 */
+button:focus-visible {
+  outline: 2px solid #ff6b9d;
+  outline-offset: 2px;
+}
+
+/* 现代化输入框焦点样式 */
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #ff6b9d;
+  outline-offset: 2px;
+}
+
+/* 现代化动画 */
+@media (prefers-reduced-motion: no-preference) {
+  * {
+    transition: background-color 0.3s ease, border-color 0.3s ease,
+      color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease,
+      opacity 0.3s ease;
+  }
+}
